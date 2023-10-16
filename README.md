@@ -5,7 +5,7 @@
  <a href="https://www.cyberghostvpn.com/"> <img src="https://raw.githubusercontent.com/tmcphee/cyberghostvpn/main/.img/CyberGhost-Logo-Header.png"></a>
 </p>
 
-# 
+#
 
 This is a deluge torrent client that use CyberGhost CLI to routing traffic through WireGuard.
 
@@ -17,12 +17,12 @@ WireGuard® is an extremely simple yet fast and modern VPN that utilizes state-o
 ## How to use this image
 Start the image using optional environment variables shown below. The end-user must supply a volume for local storage of the CyberGhost auth and token files. Supplied DNS is optional to avoid using ISP DNS during the initial connection. Ensure to run the image in privileged mode.
 ```
-docker run 
-   -d 
+docker run
+   -d
    --name='cyberghostvpn'
    --net='bridge'
    --privileged=true
-   --cap-add=NET_ADMIN 
+   --cap-add=NET_ADMIN
    -e TZ="America/New_York"
    -e 'ACC'='example@gmail.com'
    -e 'PASS'='mypassword'
@@ -36,11 +36,11 @@ Other containers can connect to this image by using its network connection.
 ```
 docker run -d --net=container:cyberghostvpn other-container
 ```
-Note: If the other containers have exposed ports for example a WEBUI. Forward that port in the cyberghostvpn image, add the port to WHITELISTPORTS environment variable, and set your local LAN using NETWORK environment variable. See [Environment variables](https://github.com/tmcphee/cyberghostvpn#environment-variables) below for details. 
+Note: If the other containers have exposed ports for example a WEBUI. Forward that port in the cyberghostvpn image, add the port to WHITELISTPORTS environment variable, and set your local LAN using NETWORK environment variable. See [Environment variables](https://github.com/tmcphee/cyberghostvpn#environment-variables) below for details.
 
 ## Selecting a country
 
-Add an environment variable called `COUNTRY` and set to the desired country. 
+Add an environment variable called `COUNTRY` and set to the desired country.
 Examples:
 - `United States` COUNTRY=US
 - `Canada`        COUNTRY=CA
@@ -48,7 +48,7 @@ Examples:
 See [CyberGhost selecting a country or single server](https://support.cyberghostvpn.com/hc/en-us/articles/360020673194--How-to-select-a-country-or-single-server-with-CyberGhost-on-Linux) for more details
 
 ## Custom DNS / NAMESERVER
-Add an environment variable called `NAMESERVER` and set to the desired DNS. 
+Add an environment variable called `NAMESERVER` and set to the desired DNS.
 Examples:
 - Cloudflare 1.1.1.1
 - Google 8.8.8.8
@@ -66,7 +66,7 @@ docker run -d --cap-add=NET_ADMIN --dns 1.1.1.1 \
 ```
 
 ## How to access ports locally
-Access ports [webUI] by providing the NETWORK and WHITELISTPORTS environment variables. Where NETWORK is the user’s network and WHITELISTPORTS is the ports the user wants to expose. 
+Access ports [webUI] by providing the NETWORK and WHITELISTPORTS environment variables. Where NETWORK is the user’s network and WHITELISTPORTS is the ports the user wants to expose.
 ```
 docker run -d --cap-add=NET_ADMIN --dns 1.1.1.1 \
            -v /local/path/to/config:/home/root/.cyberghost:rw \
@@ -87,17 +87,17 @@ docker run -d --cap-add=NET_ADMIN --dns 1.1.1.1 \
 - `PROTOCOL` - Choose between WireGuard or OpenVPN [wireguard, openvpn]. Default WireGuard
 - `FIREWALL` - Optional disable firewall. [FIREWALL=False]. Default True
 - `DELUGED_PORT` - Deluge Daemon Port, if not specified, will be default 58846
-- `DELUGEWEB_PORT` - Deluge Web Port, if not specified, will be default 9092
+- `DELUGEWEB_PORT` - Deluge Web Port, if not specified, will be default 8112
 
 ## Firewall
-This image has a custom built-in firewall. On initial start, all traffic is blocked except CyberGhost API IP and Local DNS for resolve. After VPN is connected Local DNS is blocked on Port 53. For first time use the firewall will go through a setup phase to include whitelisted ports where the firewall will be inactive. 
+This image has a custom built-in firewall. On initial start, all traffic is blocked except CyberGhost API IP and Local DNS for resolve. After VPN is connected Local DNS is blocked on Port 53. For first time use the firewall will go through a setup phase to include whitelisted ports where the firewall will be inactive.
 
-See the firewall section located in start.sh for details. 
+See the firewall section located in start.sh for details.
 
 ## Troubleshooting
 
 Docker runs, but WireGuard does not connect or gives an error
-- Try deleting the config.ini file located in your mapped config folder. This file is the login token for CyberGhost and may be expired. 
+- Try deleting the config.ini file located in your mapped config folder. This file is the login token for CyberGhost and may be expired.
 
 
 ## Disclaimer

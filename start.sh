@@ -143,7 +143,7 @@
 		fi
 
 		if [ ! -n "$DELUGEWEB_PORT" ]; then
-			export DELUGEWEB_PORT=9092
+			export DELUGEWEB_PORT=8112
 		fi
 
 		if [ ! -d  /var/log/deluge ]; then
@@ -155,6 +155,8 @@
 		sudo ufw allow out $DELUGED_PORT > /dev/null 2>&1
 		sudo ufw allow in $DELUGEWEB_PORT > /dev/null 2>&1
 		sudo ufw allow out $DELUGEWEB_PORT > /dev/null 2>&1
+		sudo ufw allow in 6881 > /dev/null 2>&1
+		sudo ufw allow in 6981 > /dev/null 2>&1
 
 		sudo deluged -p $DELUGED_PORT -c /deluge/deluged/ -l /var/log/deluge/daemon.log -L warning
 		deluge-web -p $DELUGEWEB_PORT -c /deluge/deluge-web/ -l /var/log/deluge/web.log -L warning
