@@ -29,9 +29,9 @@ jobs:
 #          docker login -u $DOCKER_USER -p $DOCKER_PW
           
       # Builds the docker image
-#      - name: Docker build Latest
-#        run: |
-#          docker build . -t tmcphee/ctest:latest
+      - name: Docker build Latest
+        run: |
+          docker build . -t ValentinGrim/ctest:latest
           
       # Pushes the Docker image to DockerHub
 #      - name: Docker push Latest
