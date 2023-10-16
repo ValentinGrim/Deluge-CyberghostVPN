@@ -2,12 +2,11 @@
  <a href="https://www.cyberghostvpn.com/"> <img src="https://raw.githubusercontent.com/tmcphee/cyberghostvpn/main/.img/CyberGhost-Logo-Header.png"></a>
 </p>
 
-# CyberGhost VPN
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tmcphee/cyberghostvpn/docker-image.yml?style=for-the-badge) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/tmcphee/cyberghostvpn?style=for-the-badge)
+# 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/ValentinGrim/Deluge-CyberghostVPN/docker-image.yml?style=for-the-badge) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ValentinGrim/Deluge-CyberghostVPN?style=for-the-badge)
 
-This is a WireGuard client docker that uses the CyberGhost CLI. It allows routing containers traffic through WireGuard.
+This is a deluge torrent client that use CyberGhost CLI to routing traffic through WireGuard.
 
-[Docker Image](https://hub.docker.com/r/tmcphee/cyberghostvpn)
 ###### Ubuntu 20.04 | CyberGhost 1.3.4
 ## What is WireGuard?
 
@@ -27,7 +26,6 @@ docker run
    -e 'PASS'='mypassword'
    -e 'COUNTRY'='US'
    -e 'NETWORK'='192.168.1.0/24'
-   -e 'WHITELISTPORTS'='9090,8080'
    -v '/local/path/to/config':'/home/root/.cyberghost:rw'
 ```
 
@@ -86,6 +84,8 @@ docker run -d --cap-add=NET_ADMIN --dns 1.1.1.1 \
 - `NAMESERVER` - Custom Nameserver/DNS [Examples: Cloudflare 1.1.1.1, Google 8.8.8.8]
 - `PROTOCOL` - Choose between WireGuard or OpenVPN [wireguard, openvpn]. Default WireGuard
 - `FIREWALL` - Optional disable firewall. [FIREWALL=False]. Default True
+- `DELUGED_PORT` - Deluge Daemon Port, if not specified, will be default 58846
+- `DELUGEWEB_PORT` - Deluge Web Port, if not specified, will be default 9092
 
 ## Firewall
 This image has a custom built-in firewall. On initial start, all traffic is blocked except CyberGhost API IP and Local DNS for resolve. After VPN is connected Local DNS is blocked on Port 53. For first time use the firewall will go through a setup phase to include whitelisted ports where the firewall will be inactive. 

@@ -55,6 +55,13 @@
 			echo "	PROTOCOL: ${PROTOCOL}"
 		fi
 
+		if [ -n "$DELUGED_PORT" ]; then
+			echo "	DELUGED PORT: ${DELUGED_PORT}"
+		fi
+		if [ -n "$DELUGEWEB_PORT" ]; then
+			echo "	DELUGE WEB PORT: ${$DELUGEWEB_PORT}"
+		fi
+
 		echo "**************************************************"
 		
 	}
@@ -131,18 +138,26 @@
 
 	#Setup and start deluged and deluge-web
 	deluge_start() {
+		if [ ! -n "$DELUGED_PORT" ]; then
+			export DELUGED_PORT=58846
+		fi
+
+		if [ ! -n "$DELUGEWEB_PORT" ]; then
+			export DELUGEWEB_PORT=9092
+		fi
+
 		if [ ! -d  /var/log/deluge ]; then
 			sudo mkdir -p /var/log/deluge
 			sudo chmod -R 755 /var/log/deluge
 		fi
 		# deluged & deluge-web port
-		sudo ufw allow in 58846 > /dev/null 2>&1
-		sudo ufw allow out 58846 > /dev/null 2>&1
-		sudo ufw allow in 9092 > /dev/null 2>&1
-		sudo ufw allow out 9092 > /dev/null 2>&1
+		sudo ufw allow in $DELUGED_PORT > /dev/null 2>&1
+		sudo ufw allow out $DELUGED_PORT > /dev/null 2>&1
+		sudo ufw allow in $DELUGEWEB_PORT > /dev/null 2>&1
+		sudo ufw allow out $DELUGEWEB_PORT > /dev/null 2>&1
 
-		sudo deluged -d -l /var/log/deluge/daemon.log -L warning &
-		deluge-web -p 9092 -l /var/log/deluge/web.log -L warning
+		sudo deluged -p $DELUGED_PORT -l /var/log/deluge/daemon.log -L warning
+		deluge-web -p $DELUGEWEB_PORT -l /var/log/deluge/web.log -L warning
 	}
 
 	if ! [ -n "$FIREWALL" ]; then
