@@ -15,6 +15,9 @@ ARG DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
 #RUN yes | unminimize
 
 RUN apt-get update -y
+RUN apt-get install software-properties-common -yes
+# Get latest version of deluged 
+RUN add-apt-repository ppa:deluge-team/ppa 
 RUN apt-get install -y \
 	sudo \
 	wget \
