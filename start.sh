@@ -158,8 +158,8 @@
 		sudo ufw allow in 6881 > /dev/null 2>&1
 		sudo ufw allow in 6981 > /dev/null 2>&1
 
-		sudo deluged -p $DELUGED_PORT -c /deluge/deluged/ -l /var/log/deluge/daemon.log -L warning
-		deluge-web -p $DELUGEWEB_PORT -c /deluge/deluge-web/ -l /var/log/deluge/web.log -L warning
+		sudo deluged -p $DELUGED_PORT -c /deluge/deluged/ -l /deluge/deluged/daemon.log -L warning
+		deluge-web -p $DELUGEWEB_PORT -c /deluge/deluge-web/ -l /deluge/deluge-web/web.log -L warning
 	}
 
 	if ! [ -n "$FIREWALL" ]; then
