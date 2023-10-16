@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: cyberghostvpn
+name: deluged-cyberghostvpn
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -21,29 +21,29 @@ jobs:
       - uses: actions/checkout@v2
       
       # Login to Docker
-      - name: Docker login
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PW: ${{ secrets.DOCKER_PW }}
-        run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PW
+#      - name: Docker login
+#        env:
+#          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+#          DOCKER_PW: ${{ secrets.DOCKER_PW }}
+#        run: |
+#          docker login -u $DOCKER_USER -p $DOCKER_PW
           
       # Builds the docker image
       - name: Docker build Latest
         run: |
-          docker build --build-arg buildtime_script_version=${{ github.event.release.tag_name }} . -t tmcphee/cyberghostvpn:latest
+          docker build --build-arg buildtime_script_version=${{ github.event.release.tag_name }} . -t ValentinGrim/deluged-cyberghostvpn:latest
           
-      # Pushes the Docker image to DockerHub
-      - name: Docker push Latest
-        run: |
-          docker push tmcphee/cyberghostvpn:latest
+#      # Pushes the Docker image to DockerHub
+#      - name: Docker push Latest
+#        run: |
+#          docker push tmcphee/cyberghostvpn:latest
           
       # Builds the docker image
       - name: Docker build Tag
         run: |
-          docker build --build-arg buildtime_script_version=${{ github.event.release.tag_name }} . -t tmcphee/cyberghostvpn:${{ github.event.release.tag_name }}
+          docker build --build-arg buildtime_script_version=${{ github.event.release.tag_name }} . -t ValentinGrim/deluged-cyberghostvpn:${{ github.event.release.tag_name }}
           
-      # Pushes the Docker image to DockerHub
-      - name: Docker push Tag
-        run: |
-          docker push tmcphee/cyberghostvpn:${{ github.event.release.tag_name }}
+#      # Pushes the Docker image to DockerHub
+#      - name: Docker push Tag
+#        run: |
+#          docker push tmcphee/cyberghostvpn:${{ github.event.release.tag_name }}

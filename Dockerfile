@@ -25,7 +25,10 @@ RUN apt-get install -y \
 	expect \
 	iputils-ping \
 	curl \
-	lsb-release
+	lsb-release \
+	screen \
+	deluged \
+	deluge-web
 	
 RUN apt-get update -y && \
 	apt-get autoremove -y && \

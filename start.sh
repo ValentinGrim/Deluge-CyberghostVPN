@@ -15,12 +15,15 @@
 	}
 	
 	startup () {
-		echo "CyberGhostVPN - Docker Edition"
+		echo "Deluge-CyberghostVPN - Docker Edition"
 		echo "----------------------------------------------------------"
-		echo "	Created By: Tyler McPhee"
-		echo "	GitHub: https://github.com/tmcphee/cyberghostvpn"
-		echo "	DockerHub: https://hub.docker.com/r/tmcphee/cyberghostvpn"
+		echo "	Originally created By: Tyler McPhee"
+		echo "		GitHub: https://github.com/tmcphee/cyberghostvpn"
+		echo "		DockerHub: https://hub.docker.com/r/tmcphee/cyberghostvpn"
 		echo "	"
+		echo "	Forked By : ValentinGrim"
+		echo "		Adding deluged and deluged-web"
+		echo "		GitHub: https://github.com/ValentinGrim/Deluge-CyberghostVPN"
 		echo "	Ubuntu:${linux_version} | CyberGhost:${cyberghost_version} | ${script_version}"
 		echo "----------------------------------------------------------"
 		
@@ -87,7 +90,7 @@
 			fi
 				
 			#Launch and connect to CyberGhost VPN
-			sudo cyberghostvpn --connect --country-code "$COUNTRY" --"$PROTOCOL" "$ARGS"
+			sudo cyberghostvpn --torrent --connect --country-code "$COUNTRY" --"$PROTOCOL" "$ARGS"
 			
 			# Add CyberGhost nameserver to resolv for DNS
 			# Add Nameserver via env variable $NAMESERVER
@@ -125,6 +128,23 @@
 		fi
 		return 1
 	}
+
+	#Setup and start deluged and deluge-web
+	deluge_start() {
+		if [ ! -d  /var/log/deluge ]; then
+			sudo mkdir -p /var/log/deluge
+			sudo chmod -R 755 /var/log/deluge
+		fi
+		# deluged & deluge-web port
+		sudo ufw allow in 58846 > /dev/null 2>&1
+		sudo ufw allow out 58846 > /dev/null 2>&1
+		sudo ufw allow in 9092 > /dev/null 2>&1
+		sudo ufw allow out 9092 > /dev/null 2>&1
+
+		sudo deluged -d -l /var/log/deluge/daemon.log -L warning &
+		deluge-web -p 9092 -l /var/log/deluge/web.log -L warning
+	}
+
 	if ! [ -n "$FIREWALL" ]; then
 		export FIREWALL="True"
 	fi
@@ -223,14 +243,16 @@
 	
 	#WIREGUARD START AND WATCH
 	cyberghost_start
-	t_hr="$(date -u --date="+30 minutes" +%H)" #Next time to check internet is reachable
-	t_min="$(date -u --date="+30 minutes" +%M)"
+	t_hr="$(date -u --date="+5 minutes" +%H)" #Next time to check internet is reachable
+	t_min="$(date -u --date="+5 minutes" +%M)"
+
+	deluge_start
 	while true #Watch if Connection is lost then reconnect
 	do
 		sleep 30
 		if [[ $(sudo cyberghostvpn --status | grep 'No VPN connections found.' | wc -l) = "1" ]]; then
 			echo '[E2] VPN Connection Lost - Attempting to reconnect....'
-			cyberghost_start	
+			cyberghost_start
 		fi
 		
 		#Every 30 Minutes ping CloudFlare to check internet reachability 
@@ -239,8 +261,8 @@
 				echo '[E3] Internet not reachable - Restarting VPN...'
 				sudo cyberghostvpn --stop
 				cyberghost_start
-				t_hr="$(date -u --date="+30 minutes" +%H)" #Next time to check internet is reachable
-				t_min="$(date -u --date="+30 minutes" +%M)"
+				t_hr="$(date -u --date="+5 minutes" +%H)" #Next time to check internet is reachable
+				t_min="$(date -u --date="+5 minutes" +%M)"
 			fi
 		fi
 	done
