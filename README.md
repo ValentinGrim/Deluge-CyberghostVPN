@@ -1,9 +1,11 @@
+[![Workflow Status](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)
+#
+
 <p align="center">
  <a href="https://www.cyberghostvpn.com/"> <img src="https://raw.githubusercontent.com/tmcphee/cyberghostvpn/main/.img/CyberGhost-Logo-Header.png"></a>
 </p>
 
 # 
-[![Workflow Status](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)
 
 This is a deluge torrent client that use CyberGhost CLI to routing traffic through WireGuard.
 
