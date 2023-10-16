@@ -2,8 +2,6 @@
 
 name: deluged-cyberghostvpn-testing
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the main branch
 on: push
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -17,21 +15,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      # Login to Docker
-#      - name: Docker login
-#       env:
-#          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-#          DOCKER_PW: ${{ secrets.DOCKER_PW }}
-#        run: |
-#          docker login -u $DOCKER_USER -p $DOCKER_PW
           
-      # Builds the docker image
+      # Test if docker build
       - name: Docker build Latest
         run: |
           docker build -t valentingrim/test .
-          
-      # Pushes the Docker image to DockerHub
-#      - name: Docker push Latest
-#        run: |
-#          docker push tmcphee/ctest:latest
