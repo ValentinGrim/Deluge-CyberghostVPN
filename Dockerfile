@@ -2,6 +2,7 @@ FROM ubuntu:20.04
 LABEL MAINTAINER="ValentinGrim"
 LABEL CREATOR="ValentinGrim"
 LABEL GITHUB="https://github.com/ValentinGrim/Deluge-CyberghostVPN"
+LABEL FORK="https://github.com/tmcphee/cyberghostvpn"
 # LABEL DOCKER="https://hub.docker.com/r/tmcphee/cyberghostvpn"
 
 ARG buildtime_script_version
