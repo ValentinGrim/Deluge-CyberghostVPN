@@ -1,4 +1,4 @@
-[![Workflow Status](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)
+[![Test build Workflow](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg?branch=main)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)
 #
 
 <p align="center">
