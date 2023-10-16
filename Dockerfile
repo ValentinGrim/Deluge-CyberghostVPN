@@ -17,8 +17,8 @@ ARG DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
 
 RUN apt-get update -y
 RUN apt-get install software-properties-common -y
-# Get latest version of deluged 
-RUN add-apt-repository ppa:deluge-team/stable && apt-get update 
+# Get latest version of deluged
+RUN add-apt-repository ppa:deluge-team/stable && apt-get update
 RUN apt-get install -y \
 	sudo \
 	wget \
@@ -30,14 +30,15 @@ RUN apt-get install -y \
 	iputils-ping \
 	curl \
 	lsb-release \
-	screen \
+	geoip-database \
+	libgeoip-dev \
 	deluged \
 	deluge-web
-	
+
 RUN apt-get update -y && \
 	apt-get autoremove -y && \
 	apt-get autoclean -y
-	
+
 #Download, prepare and install CyberGhost CLI [COPY - CACHED VERSION]
 #RUN wget https://download.cyberghostvpn.com/linux/cyberghostvpn-ubuntu-$linux_version-$cyberghost_version.zip -O cyberghostvpn_ubuntu.zip -U="Mozilla/5.0" && \
 COPY ver/cyberghostvpn-ubuntu-$linux_version-$cyberghost_version.zip ./
@@ -48,7 +49,7 @@ RUN mv cyberghostvpn-ubuntu-$linux_version-$cyberghost_version.zip cyberghostvpn
 	rm cyberghostvpn_ubuntu.zip && \
 	sed -i 's/cyberghostvpn --setup/#cyberghostvpn --setup/g' install.sh && \
 	bash install.sh
-	
+
 
 #Disable IPV6 on ufw
 RUN sed -i 's/IPV6=yes/IPV6=no/g' /etc/default/ufw
