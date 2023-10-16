@@ -3,17 +3,17 @@
 	config_ini=/home/root/.cyberghost/config.ini #CyberGhost Auth token
 
 	enable_dns_port () {
-		echo "Allowing PORT 53 - IN/OUT"	
+		echo "Allowing PORT 53 - IN/OUT"
 		sudo ufw allow out 53 > /dev/null 2>&1 #Allow port 53 on all interface for initial VPN connection
 		sudo ufw allow in 53 > /dev/null 2>&1
 	}
-	
+
 	disable_dns_port () {
 		echo "Blocking PORT 53 - IN/OUT"
 		sudo ufw delete allow out 53 > /dev/null 2>&1 #Remove Local DNS Port to prevent leaks
 		sudo ufw delete allow in 53 > /dev/null 2>&1
 	}
-	
+
 	startup () {
 		echo "Deluge-CyberghostVPN - Docker Edition"
 		echo "----------------------------------------------------------"
@@ -26,16 +26,16 @@
 		echo "		GitHub: https://github.com/ValentinGrim/Deluge-CyberghostVPN"
 		echo "	Ubuntu:${linux_version} | CyberGhost:${cyberghost_version} | ${script_version}"
 		echo "----------------------------------------------------------"
-		
+
 		echo "**************User Defined Variables**************"
-		
+
 		if [ -n "$ACC" ]; then
 			echo "	ACC: [PASSED - NOT SHOWN]"
 		fi
 		if [ -n "$PASS" ]; then
 			echo "	PASS: [PASSED - NOT SHOWN]"
 		fi
-		
+
 		if [ -n "$COUNTRY" ]; then
 			echo "	COUNTRY: ${COUNTRY}"
 		fi
@@ -63,13 +63,13 @@
 		fi
 
 		echo "**************************************************"
-		
+
 	}
-	
+
 	ip_stats () {
 		str="$(cat /etc/resolv.conf)"
 		value=${str#* }
-		
+
 		echo "***********CyberGhost Connection Info***********"
 		echo "	IP: ""$(curl -s https://ipinfo.io/ip -H "Cache-Control: no-cache, no-store, must-revalidate")"
 		echo "	CITY: ""$(curl -s https://ipinfo.io/city -H "Cache-Control: no-cache, no-store, must-revalidate")"
@@ -78,27 +78,27 @@
 		echo "	DNS: ${value}"
 		echo "************************************************"
 	}
-	
+
 	#Originated from Run.sh. Migrated for speed improvements
 	cyberghost_start () {
 		enable_dns_port
 		#Check for CyberGhost Auth file
 		if [ -f "$config_ini" ]; then
-	
+
 			# Check if country is set. Default to US
 			if ! [ -n "$COUNTRY" ]; then
 				echo "Country variable not set. Defaulting to US"
 				export COUNTRY="US"
 			fi
-				
+
 			# Check if protocol is set. Default WireGuard
 			if ! [ -n "$PROTOCOL" ]; then
 				export PROTOCOL="wireguard"
 			fi
-				
+
 			#Launch and connect to CyberGhost VPN
 			sudo cyberghostvpn --torrent --connect --country-code "$COUNTRY" --"$PROTOCOL" "$ARGS"
-			
+
 			# Add CyberGhost nameserver to resolv for DNS
 			# Add Nameserver via env variable $NAMESERVER
 			if [ -n "$NAMESERVER" ]; then
@@ -126,7 +126,7 @@
 		disable_dns_port
 		ip_stats
 	}
-	
+
 	#Check if the site is reachable
 	check_up() {
 		ping -c1 "1.1.1.1" > /dev/null 2>&1 #Ping CloudFlare
@@ -156,16 +156,16 @@
 		sudo ufw allow in $DELUGEWEB_PORT > /dev/null 2>&1
 		sudo ufw allow out $DELUGEWEB_PORT > /dev/null 2>&1
 
-		sudo deluged -p $DELUGED_PORT -l /var/log/deluge/daemon.log -L warning
-		deluge-web -p $DELUGEWEB_PORT -l /var/log/deluge/web.log -L warning
+		sudo deluged -p $DELUGED_PORT -l -c /deluge/deluged/ /var/log/deluge/daemon.log -L warning
+		deluge-web -p $DELUGEWEB_PORT -l -c /deluge/deluge-web/ /var/log/deluge/web.log -L warning
 	}
 
 	if ! [ -n "$FIREWALL" ]; then
 		export FIREWALL="True"
 	fi
-	
+
 	startup
-	
+
 	#Check if CyberGhost CLI is installed. If not install it
 	FILE=/usr/local/cyberghost/uninstall.sh
 	if [ ! -f "$FILE" ]; then
@@ -173,22 +173,22 @@
 		bash /install.sh
 		echo "Installed"
 	fi
-	
+
 	#Run Firewall if Enabled. Default Enabled
 	sysctl -w net.ipv6.conf.all.disable_ipv6=1 #Disable IPV6
 	sysctl -w net.ipv6.conf.default.disable_ipv6=1
 	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
 	sysctl -w net.ipv6.conf.eth0.disable_ipv6=1
 	sysctl -w net.ipv4.ip_forward=1
-	
-	
+
+
 	if [[ ${FIREWALL,,} == *"true"* ]]; then
 		sudo ufw enable #Start Firewall
 
 		FIREWALL_FILE=/.FIREWALL.cg
 		if [ ! -f "$FIREWALL_FILE" ]; then
 			echo "Initiating Firewall First Time Setup..."
-				
+
 			sudo ufw disable #Stop Firewall
 			export CYBERGHOST_API_IP=$(getent ahostsv4 v2-api.cyberghostvpn.com | grep STREAM | head -n 1 | cut -d ' ' -f 1)
 			sudo ufw default deny outgoing > /dev/null 2>&1							#Deny All traffic by default on all interfaces
@@ -201,7 +201,7 @@
 			sudo ufw allow out 819 > /dev/null 2>&1
 			sudo ufw allow out from any to "$CYBERGHOST_API_IP" > /dev/null 2>&1 	#Allow v2-api.cyberghostvpn.com [104.20.0.14] IP for connection
 			sudo ufw allow in from "$CYBERGHOST_API_IP" to any > /dev/null 2>&1
-			
+
 			#Allow all ports in WHITELISTPORTS ENV [Seperate by ',']
 			if [ -n "${WHITELISTPORTS}" ]; then
 				echo "Setting Whitelisted Ports..."
@@ -212,26 +212,26 @@
 				   sudo ufw allow "$i" > /dev/null 2>&1
 				done
 			fi
-			
+
 			sudo ufw enable #Start Firewall
-			echo "Firewall Setup Complete"	
+			echo "Firewall Setup Complete"
 			echo 'FIREWALL ACTIVE WHEN FILE EXISTS' > .FIREWALL.cg
 		fi
 	else
 		sudo ufw disable #Stop Firewall
 	fi
-	
+
 	#Login to account if config not exist
 	if [ ! -f "$config_ini" ]; then
 		echo "Logging into CyberGhost..."
-		
+
 		#Check for CyberGhost Credentials and Login
 		if [ -n "$ACC" ] && [ -n "$PASS" ]; then
 			enable_dns_port
 			expect /auth.sh
 			disable_dns_port
 		else
-			echo "[E1] Can't Login. User didn't provide login credentials. Set the ACC and PASS ENV variables and try again." 
+			echo "[E1] Can't Login. User didn't provide login credentials. Set the ACC and PASS ENV variables and try again."
 			exit
 		fi
 	else
@@ -248,14 +248,14 @@
 			echo "Passed"
 		fi
 	fi
-	
+
 	if [ -n "${NETWORK}" ]; then
 		echo "Adding network route..."
 		export LOCAL_GATEWAY=$(ip r | awk '/^def/{print $3}') # Get local Gateway
 		ip route add "$NETWORK" via "$LOCAL_GATEWAY" dev eth0 #Enable access to local lan
 		echo "$NETWORK" "routed to" "$LOCAL_GATEWAY" "on eth0"
 	fi
-	
+
 	#WIREGUARD START AND WATCH
 	cyberghost_start
 	t_hr="$(date -u --date="+5 minutes" +%H)" #Next time to check internet is reachable
@@ -269,8 +269,8 @@
 			echo '[E2] VPN Connection Lost - Attempting to reconnect....'
 			cyberghost_start
 		fi
-		
-		#Every 30 Minutes ping CloudFlare to check internet reachability 
+
+		#Every 30 Minutes ping CloudFlare to check internet reachability
 		if [ "$(date +%H)" = "$t_hr" ] && [ "$(date +%M)" = "$t_min" ]; then
 			if ! check_up; then
 				echo '[E3] Internet not reachable - Restarting VPN...'
@@ -281,12 +281,11 @@
 			fi
 		fi
 	done
-	
+
 	echo '[FATAL ERROR] - $?'
-	
-	
+
+
 #ERROR CODES
 #E1 Can't Login to CyberGhost - Credentials not provided
 #E2 VPN Connection Lost
 #E3 Internet Connection Lost
-	
