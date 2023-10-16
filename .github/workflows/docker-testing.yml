@@ -29,7 +29,7 @@ jobs:
       # Builds the docker image
       - name: Docker build Latest
         run: |
-          docker build . -t ValentinGrim/ctest:latest
+          docker build -t valentingrim/test .
           
       # Pushes the Docker image to DockerHub
 #      - name: Docker push Latest
