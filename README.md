@@ -1,4 +1,5 @@
-[![Test build Workflow](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg?branch=main)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)
+[![Test build Workflow](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml/badge.svg?branch=main)](https://github.com/ValentinGrim/Deluge-CyberghostVPN/actions/workflows/docker-testing.yml)  ![Static Badge](https://img.shields.io/badge/Status-Not_working-red)
+
 #
 
 <p align="center">
