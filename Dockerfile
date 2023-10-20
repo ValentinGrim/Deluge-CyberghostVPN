@@ -5,9 +5,6 @@ LABEL GITHUB="https://github.com/ValentinGrim/deluge-cyberghostvpn"
 LABEL FORK="https://github.com/tmcphee/cyberghostvpn"
 # LABEL DOCKER="https://hub.docker.com/r/tmcphee/cyberghostvpn"
 
-VOLUME /config
-VOLUME /downloads
-
 ARG buildtime_script_version
 
 ENV cyberghost_version=1.3.4
@@ -28,7 +25,6 @@ RUN apt-get install -y \
 	unzip \
 	iproute2 \
 	openresolv \
-	ufw \
 	expect \
 	iputils-ping \
 	curl \
