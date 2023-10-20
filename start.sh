@@ -132,11 +132,13 @@
 		fi
 
 		if [ ! -d  /var/log/deluge ]; then
-			sudo mkdir -p /var/log/deluge
-			sudo chmod -R 755 /var/log/deluge
+			sudo mkdir -p /config/log/deluge
+			sudo chmod -R 755 /config/log/deluge
 		fi
-		
-		sudo chmod -R 755 /config
+
+		sudo chown -R root:root /config/
+		sudo chmod -R 755 /config/
+
 		echo "Start deluged and deluge-web..."
 		sudo deluged -p $DELUGED_PORT -c /config/ -l /config/log/daemon.log -L warning
 		deluge-web -p $DELUGEWEB_PORT -c /config/ -l /config/log/web.log -L warning
