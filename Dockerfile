@@ -49,10 +49,6 @@ RUN mv cyberghostvpn-ubuntu-$linux_version-$cyberghost_version.zip cyberghostvpn
 	sed -i 's/cyberghostvpn --setup/#cyberghostvpn --setup/g' install.sh && \
 	bash install.sh
 
-
-#Disable IPV6 on ufw
-RUN sed -i 's/IPV6=yes/IPV6=no/g' /etc/default/ufw
-
 COPY start.sh auth.sh ./
 RUN chmod +x start.sh && \
 	chmod +x auth.sh
