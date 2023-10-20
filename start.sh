@@ -15,17 +15,17 @@
 	}
 
 	startup () {
-		echo "Deluge-CyberghostVPN - Docker Edition"
-		echo "----------------------------------------------------------"
+		echo "deluge-cyberghostvpn - Docker Edition"
+		echo "----------------------------------------------------------------------"
 		echo "	Originally created By: Tyler McPhee"
 		echo "		GitHub: https://github.com/tmcphee/cyberghostvpn"
 		echo "		DockerHub: https://hub.docker.com/r/tmcphee/cyberghostvpn"
 		echo "	"
 		echo "	Forked By : ValentinGrim"
 		echo "		Adding deluged and deluged-web"
-		echo "		GitHub: https://github.com/ValentinGrim/Deluge-CyberghostVPN"
+		echo "		GitHub: https://github.com/ValentinGrim/deluge-cyberghostvpn"
 		echo "	Ubuntu:${linux_version} | CyberGhost:${cyberghost_version} | ${script_version}"
-		echo "----------------------------------------------------------"
+		echo "----------------------------------------------------------------------"
 
 		echo "**************User Defined Variables**************"
 
@@ -70,13 +70,13 @@
 		str="$(cat /etc/resolv.conf)"
 		value=${str#* }
 
-		echo "***********CyberGhost Connection Info***********"
+		echo "************CyberGhost Connection Info************"
 		echo "	IP: ""$(curl -s https://ipinfo.io/ip -H "Cache-Control: no-cache, no-store, must-revalidate")"
 		echo "	CITY: ""$(curl -s https://ipinfo.io/city -H "Cache-Control: no-cache, no-store, must-revalidate")"
 		echo "	REGION: ""$(curl -s https://ipinfo.io/region -H "Cache-Control: no-cache, no-store, must-revalidate")"
 		echo "	COUNTRY: ""$(curl -s https://ipinfo.io/country -H "Cache-Control: no-cache, no-store, must-revalidate")"
 		echo "	DNS: ${value}"
-		echo "************************************************"
+		echo "**************************************************"
 	}
 
 	#Originated from Run.sh. Migrated for speed improvements
@@ -159,8 +159,8 @@
 		sudo ufw allow in 6981 > /dev/null 2>&1
 
 		echo "Start deluged and deluge-web..."
-		sudo deluged -p $DELUGED_PORT -c /config -l /deluge/log/daemon.log -L warning
-		deluge-web -p $DELUGEWEB_PORT -c /config -l /deluge/log/web.log -L warning
+		sudo deluged -p $DELUGED_PORT -c /config/ -l /config/log/daemon.log -L warning
+		deluge-web -p $DELUGEWEB_PORT -c /config/ -l /config/log/web.log -L warning
 		echo "Started"
 	}
 
