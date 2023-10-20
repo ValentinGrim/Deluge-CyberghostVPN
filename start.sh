@@ -159,8 +159,8 @@
 		sudo ufw allow in 6981 > /dev/null 2>&1
 
 		echo "Start deluged and deluge-web..."
-		sudo deluged -p $DELUGED_PORT -c /deluge/ -l /deluge/log/daemon.log -L warning
-		deluge-web -p $DELUGEWEB_PORT -c /deluge/ -l /deluge/log/web.log -L warning
+		sudo deluged -p $DELUGED_PORT -c /config -l /deluge/log/daemon.log -L warning
+		deluge-web -p $DELUGEWEB_PORT -c /config -l /deluge/log/web.log -L warning
 		echo "Started"
 	}
 
