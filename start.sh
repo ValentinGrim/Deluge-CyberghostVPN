@@ -159,13 +159,6 @@
 		echo "Installed"
 	fi
 
-	#Run Firewall if Enabled. Default Enabled
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1 #Disable IPV6
-	sysctl -w net.ipv6.conf.default.disable_ipv6=1
-	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
-	sysctl -w net.ipv6.conf.eth0.disable_ipv6=1
-	sysctl -w net.ipv4.ip_forward=1
-
 	#Login to account if config not exist
 	if [ ! -f "$config_ini" ]; then
 		echo "Logging into CyberGhost..."
@@ -201,7 +194,7 @@
 	cyberghost_start
 	t_hr="$(date -u --date="+5 minutes" +%H)" #Next time to check internet is reachable
 	t_min="$(date -u --date="+5 minutes" +%M)"
-
+	ip a
 	deluge_start
 	while true #Watch if Connection is lost then reconnect
 	do
