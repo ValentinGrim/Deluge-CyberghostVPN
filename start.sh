@@ -138,6 +138,8 @@
 
 		sudo chown -R root:root /config/
 		sudo chmod -R 755 /config/
+		sudo chown -R root:root /downloads/
+		sudo chmod -R 777 /downloads/ 
 
 		echo "Start deluged and deluge-web..."
 		sudo deluged -p $DELUGED_PORT -c /config/ -l /config/log/daemon.log -L warning
