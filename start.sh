@@ -169,7 +169,7 @@
 
 		#Check for CyberGhost Credentials and Login
 		if [ -n "$ACC" ] && [ -n "$PASS" ]; then
-			expect /auth.sh
+			expect auth.sh
 		else
 			echo "[E1] Can't Login. User didn't provide login credentials. Set the ACC and PASS ENV variables and try again."
 			exit
@@ -181,7 +181,7 @@
 			echo "Failed"
 			rm "$config_ini"
 			echo "Logging into CyberGhost..."
-			expect /auth.sh
+			expect auth.sh
 		else
 			echo "Passed"
 		fi
