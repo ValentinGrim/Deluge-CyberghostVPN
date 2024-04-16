@@ -49,10 +49,10 @@ RUN mv cyberghostvpn-ubuntu-$linux_version-$cyberghost_version.zip cyberghostvpn
 	sed -i 's/cyberghostvpn --setup/#cyberghostvpn --setup/g' install.sh && \
 	bash install.sh
 
-COPY start.sh auth.sh /usr/bin/
-RUN chmod +x /usr/bin/start.sh && \
-	chmod +x /usr/bin/auth.sh
+COPY start.sh auth.sh /
+RUN chmod +x /start.sh && \
+	chmod +x /auth.sh
 
 COPY core.conf /opt/default/core.conf
 
-CMD ["bash", "start.sh"]
+CMD ["bash", "/start.sh"]
