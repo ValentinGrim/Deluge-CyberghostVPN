@@ -1,4 +1,4 @@
-FROM ubuntu:2.04
+FROM ubuntu:20.04
 LABEL MAINTAINER="ValentinGrim"
 LABEL CREATOR="ValentinGrim"
 LABEL GITHUB="https://github.com/ValentinGrim/deluge-cyberghostvpn"
