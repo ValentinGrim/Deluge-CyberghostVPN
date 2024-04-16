@@ -134,6 +134,8 @@
 		if [ ! -d  /var/log/deluge ]; then
 			sudo mkdir -p /config/log/deluge
 			sudo chmod -R 755 /config/log/deluge
+			# Loading default option with interface_listening=cyberghost 
+			cp /opt/default/core.conf /config/core.conf
 		fi
 
 		sudo chown -R root:root /config/
