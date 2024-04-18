@@ -131,7 +131,7 @@
 			export DELUGEWEB_PORT=8112
 		fi
 
-		if [ ! -d  /var/log/deluge ]; then
+		if [ ! -d  /config/log/deluge ]; then
 			sudo mkdir -p /config/log/deluge
 			sudo chmod -R 755 /config/log/deluge
 			# Loading default option with interface_listening=cyberghost 
