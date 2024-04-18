@@ -1,15 +1,13 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL MAINTAINER="ValentinGrim"
 LABEL CREATOR="ValentinGrim"
 LABEL GITHUB="https://github.com/ValentinGrim/deluge-cyberghostvpn"
 LABEL FORK="https://github.com/tmcphee/cyberghostvpn"
 # LABEL DOCKER="https://hub.docker.com/r/tmcphee/cyberghostvpn"
 
-ARG buildtime_script_version
-
-ENV cyberghost_version=1.3.4
-ENV linux_version=20.04
-ENV script_version=$buildtime_script_version
+ENV cyberghost_version=1.4.1
+ENV linux_version=22.04
+ENV script_version=2.0
 
 ARG DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
 
